@@ -1,0 +1,83 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+  <body>
+
+    <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#">Game</a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+    </div>
+
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="text text-center">
+                Missile Designer
+            </h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="btn-group btn-group-vertical btn-group-lg">
+                {% for design_id, design_name in missiles %}
+                    {% bootstrap_button design_name href="#"%}
+                {% endfor %}
+                <button class="btn btn-info" type="button">
+                New Design <span class="glyphicon glyphicon-plus"></span>
+                </button>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <form role="form">
+                <div class="form-group">
+                     
+                    <label for="exampleInputEmail1">
+                        Email address
+                    </label>
+                    <input type="email" class="form-control" id="exampleInputEmail1">
+                </div>
+                <div class="form-group">
+                     
+                    <label for="exampleInputPassword1">
+                        Password
+                    </label>
+                    <input type="password" class="form-control" id="exampleInputPassword1">
+                </div>
+                <div class="form-group">
+                     
+                    <label for="exampleInputFile">
+                        File input
+                    </label>
+                    <input type="file" id="exampleInputFile">
+                    <p class="help-block">
+                        Example block-level help text here.
+                    </p>
+                </div>
+                <div class="checkbox">
+                     
+                    <label>
+                        <input type="checkbox"> Check me out
+                    </label>
+                </div> 
+                <button type="submit" class="btn btn-default">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+  </body>
+</html>
