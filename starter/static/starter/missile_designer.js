@@ -13,7 +13,6 @@ $(document).ready(function(){
 
 
     $("#design_form").on('submit', function(event){
-        console.log("Submmit");
         event.preventDefault();
         //get the form
         if (this.design === "unsaved") {
@@ -24,24 +23,30 @@ $(document).ready(function(){
         }
     });
 
+    //User has selected an existing design
+    apply_side_button_cb();
+
 
 
 });
 
+function apply_side_button_cb(){
+     //User has selected an existing design
+    $(".side-button").click(function(){
+        console.log("Loading design");
+        //TODO check for unsaved designs before we overwrite the design
+        $("#design_form").show().prop("design", this.id);
+        read_design_from_db(this.id);
+    });
+
+}
+
 function create_design(form){
-    console.log("creating design");
     //extract the input data for every field in the form
     var data_obj = {};
     $(form).find("input").each(function(index){
-        if(this.type == "checkbox") {
-            data_obj[this.id] = this.checked;
-        }
-        else{
             data_obj[this.id] = this.value;
-        }
-
     });
-    console.log(data_obj);
     $.ajax({
         url : "create_missile_design/",
         type : "POST",
@@ -49,7 +54,9 @@ function create_design(form){
 
         // handle a successful response
         success : function(json) {
-            $('#side_bar').prepend("<button class=\"btn\" type=\"button\" id=" + json.id + ">" + json.name + "</button>");
+            $('#side_bar').prepend("<button class=\"btn side-button\" type=\"button\" id=" + json.id + ">" + json.name + "</button>");
+            $("#design_form").prop("design", json.id);
+            apply_side_button_cb();
 
         },
 
@@ -57,12 +64,33 @@ function create_design(form){
         error : function(xhr,errmsg,err) {
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
-
-
     });
-
 }
 
+function read_design_from_db(design_id){
+    $.ajax({
+        url : "get_missile_design/",
+        type : "GET",
+        data : {"design_id" : design_id},
+
+        // handle a successful response
+        success : function(json) {
+            //read the response and fill in the fields on the design_form
+            fields = json[0].fields;
+            $("#design_form").find("input").each(function(index){
+                if(this.id !== ""){
+                    //ignore the special csrf field
+                    this.value = fields[this.id.slice(3)];
+                }
+            });
+        },
+
+        // handle a non-successful response
+        error : function(xhr,errmsg,err) {
+            console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+        }
+    });
+}
 
 $(function() {
 

@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponse
 from .models import Missile, MissileDesigns
 from .forms import MissileForm
+from django.core import serializers
 
 import json
 
@@ -27,7 +28,7 @@ def create_missile_design(request):
         #convert to "<field_name>" -> <field_data>
         convert_functions = {
             "name" : lambda x: x,
-            "is_offensive" : lambda x: True if x == "true" else False,
+            "is_offensive" : lambda x: True if x == "on" else False,
             "fuel" : int,
             "thrust" : int,
             "rotation_force" : int,
@@ -46,11 +47,25 @@ def create_missile_design(request):
 
         #add the new design
         MissileDesigns(design=missile).save()
-
+        print("Making missle with pk {}".format(missile.pk))
         return JsonResponse(
             {"name" : missile.name,
             "id" : missile.pk
         })
+    else:
+         raise Http404()
+
+def get_missile_design(request):
+    if request.method == 'GET':
+        design_id = request.GET.get("design_id")
+        print("Getting missile with pk {}".format(design_id))
+        missile = Missile.objects.get(pk=design_id)
+
+        data = serializers.serialize('json', [missile])
+        return HttpResponse(
+            data,
+            content_type="application/json"
+        )
     else:
          raise Http404()
 
