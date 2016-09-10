@@ -49,8 +49,8 @@ function create_design(form){
 
         // handle a successful response
         success : function(json) {
-           //don't need to do anything
-           console.log("Added design");
+            $('#side_bar').prepend("<button class=\"btn\" type=\"button\" id=" + json.id + ">" + json.name + "</button>");
+
         },
 
         // handle a non-successful response

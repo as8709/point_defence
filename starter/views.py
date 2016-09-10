@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import Http404, HttpResponse
+from django.http import Http404, JsonResponse
 from .models import Missile, MissileDesigns
 from .forms import MissileForm
 
@@ -47,10 +47,10 @@ def create_missile_design(request):
         #add the new design
         MissileDesigns(design=missile).save()
 
-        return HttpResponse(
-            json.dumps({}),
-            content_type="application/json"
-        )
+        return JsonResponse(
+            {"name" : missile.name,
+            "id" : missile.pk
+        })
     else:
          raise Http404()
 
