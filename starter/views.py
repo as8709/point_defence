@@ -13,8 +13,8 @@ def designer(request):
     return render(request, 'starter/designer.html')
 
 def missile_designer(request):
-    design_ids = MissileDesigns.objects.all()
-    missiles  = [(design_id, Missile.objects.get(id=design_id).name) for design_id in design_ids]
+    designs = MissileDesigns.objects.all()
+    missiles  = [(design.pk, design.design.name) for design in designs]
     context = {
         'missiles' : missiles,
         'missile_form': MissileForm()
@@ -43,6 +43,9 @@ def create_missile_design(request):
 
         missile = Missile(**fields)
         missile.save()
+
+        #add the new design
+        MissileDesigns(design=missile).save()
 
         return HttpResponse(
             json.dumps({}),

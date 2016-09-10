@@ -36,7 +36,7 @@
         <div class="col-md-3">
             <div class="btn-group btn-group-vertical btn-group-lg">
                 {% for design_id, design_name in missiles %}
-                    {% bootstrap_button design_name href="#" id=design_id%}
+                    <button class="btn" type="button" id={{design_id}}> {{design_name}}</button>
                 {% endfor %}
                 <button class="btn btn-info" type="button" id="new_design">
                 New Design <span class="glyphicon glyphicon-plus"></span>
