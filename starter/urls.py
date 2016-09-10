@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^designer/controller', views.controller_designer, name='controller-designer'),
     url(r'create_missile_design', views.create_missile_design),
     url(r'get_missile_design', views.get_missile_design),
+    url(r'delete_missile_design', views.delete_missile_design),
     url(r'^$', views.index, name='index'),
 
 ]

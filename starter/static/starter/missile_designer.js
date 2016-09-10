@@ -7,7 +7,10 @@ $(document).ready(function(){
     $("#new_design").click(function(){
         $("#default").hide();
         //TODO check for unsaved designs
-        $("#design_form").show().prop("design", "unsaved").trigger("reset");
+        set_active_design("unsaved");
+        $("#design_form").show().trigger("reset");
+        $("#delete_button").prop("disabled", true);
+        $("#delete_button").show();
 
     });
 
@@ -15,11 +18,28 @@ $(document).ready(function(){
     $("#design_form").on('submit', function(event){
         event.preventDefault();
         //get the form
-        if (this.design === "unsaved") {
+        if (get_active_design() === "unsaved") {
             //brand new design
             create_design(this);
         } else {
             //updating an existing design
+        }
+    });
+
+    $("#delete_cnf").click(function(){
+        //go back to the default state
+        $("#design_form").hide();
+        $("#delete_button").hide();
+        $("#default").show();
+
+        var active_design = get_active_design();
+        if(active_design !== "unsaved"){
+
+            //Tell the server to delete this design
+            delete_design(active_design);
+            //reset the side bar
+            $("#" + active_design).remove();
+
         }
     });
 
@@ -34,8 +54,11 @@ function apply_side_button_cb(){
      //User has selected an existing design
     $(".side-button").click(function(){
         $("#default").hide();
+        $("#design_form").show();
         //TODO check for unsaved designs before we overwrite the design
-        $("#design_form").show().prop("design", this.id);
+        set_active_design(this.id);
+        $("#delete_button").show();
+        $("#delete_button").prop("disabled", false);
         read_design_from_db(this.id);
     });
 
@@ -55,7 +78,7 @@ function create_design(form){
         // handle a successful response
         success : function(json) {
             $('#side_bar').prepend("<button class=\"btn side-button\" type=\"button\" id=" + json.id + ">" + json.name + "</button>");
-            $("#design_form").prop("design", json.id);
+            set_active_design(json.id);
             apply_side_button_cb();
 
         },
@@ -64,6 +87,23 @@ function create_design(form){
         error : function(xhr,errmsg,err) {
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
+    });
+}
+
+function delete_design(design_id){
+    $.ajax({
+            url : "delete_missile_design/",
+            type : "POST",
+            data : {"design_id" : design_id},
+
+            // handle a successful response
+            success : function(json) {
+            },
+
+            // handle a non-successful response
+            error : function(xhr,errmsg,err) {
+                console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+            }
     });
 }
 
@@ -90,6 +130,14 @@ function read_design_from_db(design_id){
             console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
         }
     });
+}
+
+function get_active_design(){
+    return $("#design_form").prop("design");
+}
+
+function set_active_design(design_id){
+    $("#design_form").prop("design", design_id);
 }
 
 $(function() {

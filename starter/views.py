@@ -47,7 +47,6 @@ def create_missile_design(request):
 
         #add the new design
         MissileDesigns(design=missile).save()
-        print("Making missle with pk {}".format(missile.pk))
         return JsonResponse(
             {"name" : missile.name,
             "id" : missile.pk
@@ -55,10 +54,19 @@ def create_missile_design(request):
     else:
          raise Http404()
 
+def delete_missile_design(request):
+    if request.method == 'POST':
+        design_id = request.POST.get("design_id")
+        print(design_id)
+        missile = Missile.objects.get(pk=design_id).delete()
+        #the corresponding missile designs row should be deleted automatically
+        return JsonResponse({})
+    else:
+         raise Http404()
+
 def get_missile_design(request):
     if request.method == 'GET':
         design_id = request.GET.get("design_id")
-        print("Getting missile with pk {}".format(design_id))
         missile = Missile.objects.get(pk=design_id)
 
         data = serializers.serialize('json', [missile])
