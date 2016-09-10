@@ -15,7 +15,7 @@ def designer(request):
 
 def missile_designer(request):
     designs = MissileDesigns.objects.all()
-    missiles  = [(design.pk, design.design.name) for design in designs]
+    missiles  = [(design.design.pk, design.design.name) for design in designs]
     context = {
         'missiles' : missiles,
         'missile_form': MissileForm()

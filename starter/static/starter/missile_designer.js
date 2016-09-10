@@ -7,7 +7,7 @@ $(document).ready(function(){
     $("#new_design").click(function(){
         $("#default").hide();
         //TODO check for unsaved designs
-        $("#design_form").show().prop("design", "unsaved");
+        $("#design_form").show().prop("design", "unsaved").trigger("reset");
 
     });
 
@@ -33,7 +33,7 @@ $(document).ready(function(){
 function apply_side_button_cb(){
      //User has selected an existing design
     $(".side-button").click(function(){
-        console.log("Loading design");
+        $("#default").hide();
         //TODO check for unsaved designs before we overwrite the design
         $("#design_form").show().prop("design", this.id);
         read_design_from_db(this.id);
