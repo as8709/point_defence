@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import Http404, Http403, JsonResponse, HttpResponse
+from django.http import Http404, HttpResponseForbidden, JsonResponse, HttpResponse
 from .models import Missile, MissileDesigns
 from .forms import MissileForm
 from django.core import serializers
@@ -8,29 +8,29 @@ from django.contrib.auth.decorators import login_required
 import json
 
 # Create your views here.
-@login_required
+#@login_required
 def index(request):
     return render(request, 'starter/index.html')
 
-@login_required
+#@login_required
 def designer(request):
     return render(request, 'starter/designer.html')
 
-@login_required
+#@login_required
 def missile_designer(request):
     designs = MissileDesigns.objects.all()
     missiles  = [(design.design.pk, design.design.name) for design in designs]
     context = {
-        'missiles' : missiles,
-        'missile_form': MissileForm()
+        'designs' : missiles,
+        'design_form': MissileForm()
     }
     return render(request, 'starter/missile-designer.html', context)
 
-
+#@login_required
 def create_missile_design(request):
     if request.method == 'POST':
-        if not request.user.is_authenticated:
-            return Http403()
+        #if not request.user.is_authenticated:
+        #    return HttpResponseForbidden()
 
         #fields is "id_<field_name>" -> <field_data>
         #convert to "<field_name>" -> <field_data>
@@ -62,10 +62,11 @@ def create_missile_design(request):
     else:
          raise Http404()
 
+#@login_required
 def delete_missile_design(request):
     if request.method == 'POST':
-        if not request.user.is_authenticated:
-            return Http403()
+        #if not request.user.is_authenticated:
+        #    return HttpResponseForbidden()
         design_id = request.POST.get("design_id")
         print(design_id)
         missile = Missile.objects.get(pk=design_id).delete()
@@ -74,10 +75,11 @@ def delete_missile_design(request):
     else:
          raise Http404()
 
+#@login_required
 def get_missile_design(request):
     if request.method == 'GET':
-        if not request.user.is_authenticated:
-            return Http403()
+        #if not request.user.is_authenticated:
+        #    return HttpResponseForbidden()
         design_id = request.GET.get("design_id")
         missile = Missile.objects.get(pk=design_id)
 
@@ -89,10 +91,10 @@ def get_missile_design(request):
     else:
          raise Http404()
 
-@login_required
+#@login_required
 def gun_designer(request):
     raise Http404("Not implemented yet")
 
-@login_required
+#@login_required
 def controller_designer(request):
     raise Http404("Not implemented yet")

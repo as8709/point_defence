@@ -1,47 +1,8 @@
-{# Load the tag library #}
-{% load bootstrap3 %}
-
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
-
-<body>
-
-    <div class="container">
-      <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Game</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
-          </ul>
-        </nav>
-        <h3 class="text-muted">Point Defence</h3>
-      </div>
-
-      <div class="jumbotron">
-        <div class = "btn-group-vertical">
-            <a href={% url 'designer'%} class="btn btn-default active" role="button">Designer</a>
-            <a href="#" class="btn btn-default" role="button">To Battle</a>
-            <a href="#" class="btn btn-default" role="button">High Scores</a>
-        </div>
-      </div>
-
-      <div class="row marketing">
-        <div class="col-lg-6">
-          <h4>Point Defence</h4>
-          <p>The missile defence programming game no-one asked for.</p>
-
-      </div>
-
-      <footer class="footer">
-        <p>&copy; 2016</p>
-      </footer>
-
-    </div> <!-- /container -->
-
-  </body>
-</html>
+{% extends "starter/base.html" %}
+{% block content %}
+<div class = "btn-group-vertical">
+    <a href={% url 'designer'%} class="btn btn-default active" role="button">Designer</a>
+    <a href="#" class="btn btn-default" role="button">To Battle</a>
+    <a href="#" class="btn btn-default" role="button">High Scores</a>
+</div>
+{% endblock %}
