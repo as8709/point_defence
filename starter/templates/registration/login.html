@@ -1,0 +1,66 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+{% load static %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+{# Display django.contrib.messages as Bootstrap alerts #}
+{% bootstrap_messages %}
+
+<script src='{% static "starter/missile_designer.js" %}'> </script>
+
+<body>
+
+    <div class="header clearfix">
+        <nav>
+          <ul class="nav nav-pills pull-right">
+            <li role="presentation" class="active"><a href="#">Game</a></li>
+            <li role="presentation"><a href="#">About</a></li>
+            <li role="presentation"><a href="#">Contact</a></li>
+          </ul>
+        </nav>
+    </div>
+
+    <div class="container-fluid">
+        {% if form.errors %}
+        <p>Your username and password didn't match. Please try again.</p>
+        {% endif %}
+
+        {% if next %}
+            {% if user.is_authenticated %}
+                <p>Your account doesn't have access to this page. To proceed,
+                please login with an account that has access.</p>
+            {% else %}
+                <p>Please login to see this page.</p>
+            {% endif %}
+        {% endif %}
+
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="col-md-6">
+                {{ form.username.label_tag }}
+            </div>
+            <div class="col-md-6">
+                {{ form.username }}
+            </div>
+            <div class="col-md-6">
+                {{ form.password.label_tag }}
+            </div>
+            <div class="col-md-6">
+                {{ form.password }}
+            </div>
+            <button type="submit" class="btn btn-default">Login</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+        </form>
+
+        <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+
+    </div>
+
+
+
+</body>
+</html>

@@ -2,6 +2,7 @@ from django.db import models
 import django.core.validators
 # Create your models here.
 class Missile(models.Model):
+    user = models.ForeignKey(User, editable=False)
     name = models.CharField(max_length=200)
     is_offensive = models.BooleanField()
     fuel = models.PositiveSmallIntegerField()
