@@ -1,29 +1,17 @@
+{% extends "starter/base.html" %}
 {# Load the tag library #}
 {% load bootstrap3 %}
 {% load static %}
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
 
-{# Display django.contrib.messages as Bootstrap alerts #}
-{% bootstrap_messages %}
 
-<script src='{% static "starter/missile_designer.js" %}'> </script>
+{% block header %}
+    <h3 class="text-muted">Login</h3>
+{% endblock %}
 
-<body>
 
-    <div class="header clearfix">
-        <nav>
-          <ul class="nav nav-pills pull-right">
-            <li role="presentation" class="active"><a href="#">Game</a></li>
-            <li role="presentation"><a href="#">About</a></li>
-            <li role="presentation"><a href="#">Contact</a></li>
-          </ul>
-        </nav>
-    </div>
 
+{% block content %}
     <div class="container-fluid">
         {% if form.errors %}
         <p>Your username and password didn't match. Please try again.</p>
@@ -57,10 +45,7 @@
         </form>
 
         <p><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        <p><a href="{% url 'register' %}">Register</a></p>
 
     </div>
-
-
-
-</body>
-</html>
+{% endblock %}

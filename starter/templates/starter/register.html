@@ -1,0 +1,14 @@
+{% extends "starter/base.html" %}
+{% block content %}
+<form role="form" method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn" type="submit" class="btn btn-default">
+                    Create Account
+                </button>
+</form>
+{% endblock %}
+
+{%block header %}
+Create an account
+{% endblock %}

@@ -82,7 +82,7 @@ DATABASES = {
     }
 }
 
-LOGIN_URL="/starter/login"
+
 
 
 # Password validation
